@@ -59,6 +59,22 @@
 
     const projects: Project[] = [
         {
+            name: "meowpayments",
+            description:
+                "Custom crypto payment processor proxying near intents",
+            longDescription:
+                "meowpayments is a custom crypto payment processor built using the free Near API, handling all major networks & tokens. Built for and used by horr.id, it was created for a privacy focused, no AML-check solution to other existing services such as nowpayments",
+            icon: "/exch.png",
+            stack: ["Go", "Python", "CQL"],
+            links: [
+                {
+                    label: "github",
+                    href: "https://github.com/ravegirl/meowpayments",
+                    kind: "github",
+                },
+            ],
+        },
+        {
             name: "horr.id",
             description:
                 "is an email, file hosting & biolink platform focused on simplicity",
@@ -99,22 +115,6 @@
             ],
             desktopPreview: '/asdf.png',
             mobilePreview: '/wuh.png'
-        },
-        {
-            name: "meowpayments",
-            description:
-                "Custom crypto payment processor proxying near intents",
-            longDescription:
-                "meowpayments is a custom crypto payment processor built using the free Near API, handling all major networks & tokens. Built for and used by horr.id, it was created for a privacy focused, no AML-check solution to other existing services such as nowpayments",
-            icon: "/exch.png",
-            stack: ["Go", "Python", "CQL"],
-            links: [
-                {
-                    label: "github",
-                    href: "https://github.com/ravegirl/meowpayments",
-                    kind: "github",
-                },
-            ],
         },
     ];
 
