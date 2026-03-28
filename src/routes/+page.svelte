@@ -203,7 +203,7 @@
             class:visible
             style="--delay: {delays.pfp}"
         >
-            <img src="/pfp.png" alt="profile picture" />
+            <img src="https://github.com/ravegirl.png" alt="profile picture" />
         </div>
 
         <div class="content">
