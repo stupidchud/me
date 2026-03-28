@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href="/pfp.png" />
+	<link rel="icon" href="https://github.com/ravegirl.png" />
 	<link rel="stylesheet" href="/css/page.css" />
 	<link rel="stylesheet" href="/css/modal.css" />
 </svelte:head>
