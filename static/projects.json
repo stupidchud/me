@@ -1,0 +1,99 @@
+[
+    [
+        {
+            "name": "meowpayments",
+            "description": "Custom crypto payment processor proxying near intents",
+            "longDescription": "meowpayments is a custom crypto payment processor built using the free Near API, handling all major networks & tokens. Built for and used by horr.id, it was created for a privacy focused, no AML-check solution to other existing services such as nowpayments",
+            "icon": "/icons/exch.png",
+            "stack": ["Go", "Python", "CQL"],
+            "links": [
+                {
+                    "label": "github",
+                    "href": "https://github.com/ravegirl/meowpayments",
+                    "kind": "github"
+                }
+            ]
+        },
+        {
+            "name": "horr.id",
+            "description": "is an email, file hosting & biolink platform focused on simplicity",
+            "longDescription": "horr.id is platform combining email hosting, file storage, and biolink pages into one clean interface.",
+            "icon": "/icons/horrid.png",
+            "stack": ["Go", "Svelte"],
+            "links": [{ "label": "site", "href": "https://horr.id", "kind": "site" }],
+            "desktopPreview": "/previews/horr.png",
+            "mobilePreview": "/previews/horr.png"
+        },
+        {
+            "name": "DiSpy",
+            "description": "A distributed Discord event logging and processing system",
+            "longDescription": "DiSpy is a high-throughput distributed system for capturing, processing, and storing Discord gateway events at scale. Uses a multi-worker architecture with CQL (Cassandra) for time-series event storage, Python for microservices & Svelte for frontend",
+            "icon": "/icons/spypet.png",
+            "stack": ["Go", "Python", "TypeScript", "Shell", "CQL"],
+            "desktopPreview": "/previews/ilovespy.png",
+            "mobilePreview": "/previews/WElovespy.png"
+        },
+        {
+            "name": "asdfgh",
+            "description": "An open source, advanced discord bot complete with a dashboard",
+            "longDescription": "asdfgh is a fully-featured open source Discord bot built with discord.py & FastAPI, covering protection & moderation features through an advanced web dashboard, using aiosqlite for database",
+            "icon": "/icons/asdfgh.png",
+            "stack": ["Python", "SQL"],
+            "links": [
+                {
+                    "label": "github",
+                    "href": "https://github.com/ravegirl/asdfgh",
+                    "kind": "github"
+                }
+            ],
+            "desktopPreview": "/previews/asdf.png",
+            "mobilePreview": "/previews/wuh.png"
+        }
+    ],
+    [
+        {
+            "name": "meowurl",
+            "description": "A VS Code extension for testing OpenAPI/Swagger endpoints",
+            "longDescription": "meowurl is a VS Code extension for testing OpenAPI/Swagger endpoints directly in your editor.",
+            "icon": "/icons/meowurl.png",
+            "stack": ["Svelte", "TypeScript"],
+            "links": [
+                {
+                    "label": "github",
+                    "href": "https://github.com/ravegirl/meowurl",
+                    "kind": "github"
+                }
+            ]
+        },
+        {
+            "name": "meowavatar",
+            "description": "Self-hosted service that allows you to easily access avatars from any platform",
+            "longDescription": "meowavatar is a self-hosted service that allows you to easily access avatars from any platform. It provides a simple API for fetching and displaying avatars",
+            "icon": "/icons/meowavatar.png",
+            "stack": ["Go", "Python"],
+            "links": [
+                {
+                    "label": "github",
+                    "href": "https://github.com/ravegirl/meowavatar",
+                    "kind": "github"
+                }
+            ]
+        },
+        {
+            "name": "placeholder",
+            "description": "A placeholder project for future work, lorem ipsum blablabla",
+            "longDescription": "This is a placeholder project for future work. It will be updated",
+            "icon": "/icons/placeholder.png",
+            "stack": ["Python"],
+            "links": []
+        },
+                {
+            "name": "placeholder",
+            "description": "A placeholder project for future work, lorem ipsum blablabla",
+            "longDescription": "This is a placeholder project for future work. It will be updated",
+            "icon": "/icons/placeholder.png",
+            "stack": ["Python"],
+            "links": []
+        }
+    ]
+]

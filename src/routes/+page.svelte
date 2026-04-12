@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import Modal from "$lib/components/Modal.svelte";
 
     let visible = $state(false);
@@ -10,15 +10,29 @@
 
     const delays = {
         pfp: randomDelay(0, 60),
-        header: randomDelay(180, 80),
-        stack: randomDelay(380, 80),
-        projects: randomDelay(580, 100),
+        header: randomDelay(280, 80),
+        stack: randomDelay(520, 80),
+        projects: randomDelay(760, 100),
     };
 
+    let pfpImg = $state<HTMLImageElement | null>(null);
+
     onMount(() => {
-        requestAnimationFrame(() => {
-            visible = true;
-        });
+        const reveal = () => requestAnimationFrame(() => { visible = true; });
+        // fallback: show after 2s regardless
+        const fallback = setTimeout(reveal, 2000);
+        const cleanup = () => clearTimeout(fallback);
+
+        if (pfpImg?.complete) {
+            cleanup();
+            reveal();
+        } else if (pfpImg) {
+            pfpImg.onload = () => { cleanup(); reveal(); };
+            pfpImg.onerror = () => { cleanup(); reveal(); };
+        } else {
+            // element not yet bound — reveal anyway
+            reveal();
+        }
     });
 
     let copied = $state(false);
@@ -57,105 +71,50 @@
         href: string;
     };
 
-    const projects: Project[] = [
-        {
-            name: "meowpayments",
-            description:
-                "Custom crypto payment processor proxying near intents",
-            longDescription:
-                "meowpayments is a custom crypto payment processor built using the free Near API, handling all major networks & tokens. Built for and used by horr.id, it was created for a privacy focused, no AML-check solution to other existing services such as nowpayments",
-            icon: "/exch.png",
-            stack: ["Go", "Python", "CQL"],
-            links: [
-                {
-                    label: "github",
-                    href: "https://github.com/ravegirl/meowpayments",
-                    kind: "github",
-                },
-            ],
-        },
-        {
-            name: "horr.id",
-            description:
-                "is an email, file hosting & biolink platform focused on simplicity",
-            longDescription:
-                "horr.id is platform combining email hosting, file storage, and biolink pages into one clean interface.",
-            icon: "/horrid.png",
-            stack: ["Go", "Svelte"],
-            links: [{ label: "site", href: "https://horr.id", kind: "site" }],
-            desktopPreview: '/horr.png',
-            mobilePreview: '/horr.png'
-        },
-        {
-            name: "DiSpy",
-            description:
-                "A distributed Discord event logging and processing system",
-            longDescription:
-                "DiSpy is a high-throughput distributed system for capturing, processing, and storing Discord gateway events at scale. Uses a multi-worker architecture with CQL (Cassandra) for time-series event storage, Python for microservices & Svelte for frontend",
-            icon: "/spypet.png",
-            stack: ["Go", "Python", "TypeScript", "Shell", "CQL"],
-            desktopPreview: '/ilovespy.png',
-            mobilePreview: '/WElovespy.png',
+    let projectPages = $state<Project[][]>([]);
+    let stack = $state<StackItem[]>([]);
 
-        },
-        {
-            name: "asdfgh",
-            description:
-                "An open source, advanced discord bot complete with a dashboard",
-            longDescription:
-                "asdfgh is a fully-featured open source Discord bot built with discord.py & FastAPI, covering protection & moderation features through an advanced web dashboard, using aiosqlite for database",
-            icon: "/asdfgh.png",
-            stack: ["Python", "SQL"],
-            links: [
-                {
-                    label: "github",
-                    href: "https://github.com/ravegirl/asdfgh",
-                    kind: "github",
-                },
-            ],
-            desktopPreview: '/asdf.png',
-            mobilePreview: '/wuh.png'
-        },
-    ];
+    onMount(async () => {
+        try {
+            const res = await fetch("/projects.json");
+            if (res.ok) {
+                projectPages = await res.json();
+                // Preload all images now that data is loaded
+                for (const page of projectPages) {
+                    for (const project of page) {
+                        for (const src of [project.icon, project.desktopPreview, project.mobilePreview]) {
+                            if (src) {
+                                const img = new Image();
+                                img.src = src;
+                            }
+                        }
+                    }
+                }
+            }
+        } catch {
+            // silently fail
+        }
+    });
 
-    const stack: StackItem[] = [
-        {
-            name: "Python",
-            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
-            href: "https://python.org",
-        },
-        {
-            name: "Go",
-            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg",
-            href: "https://go.dev",
-        },
-        {
-            name: "TypeScript",
-            icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-            href: "https://typescriptlang.org",
-        },
-        {
-            name: "Svelte",
-            icon: "https://svelte.dev/favicon.png",
-            href: "https://svelte.dev",
-        },
-        {
-            name: "React",
-            icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png?_=20220125121207",
-            href: "https://react.dev",
-        },
-    ];
+    onMount(async () => {
+        try {
+            const res = await fetch("/stack.json");
+            if (res.ok) stack = await res.json();
+        } catch {
+            // silently fail
+        }
+    });
 
     const extraIcons: Record<string, string> = {
         Shell: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg",
         CQL: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cassandra/cassandra-original.svg",
-        SQL: "/sql.png",
+        SQL: "/icons/sql.png",
     };
 
-    const stackIconMap: Record<string, string> = {
+    const stackIconMap = $derived<Record<string, string>>({
         ...Object.fromEntries(stack.map((s) => [s.name, s.icon])),
         ...extraIcons,
-    };
+    });
 
     let lastUpdated = $state<string | null>(null);
 
@@ -193,6 +152,31 @@
         selectedProject = null;
         setTimeout(() => { displayedProject = null; }, 180);
     }
+
+    // Pagination
+    const FADE_DURATION = 220; // ms - content fade in/out duration
+    let currentPage = $state(0);
+    let gridVisible = $state(true);
+
+    const totalPages = $derived(projectPages.length);
+
+    async function changePage(dir: 1 | -1) {
+        const next = currentPage + dir;
+        if (next < 0 || next >= totalPages) return;
+        // 1. fade out
+        gridVisible = false;
+        await tick();
+        // 2. wait for CSS transition to finish
+        await new Promise(r => setTimeout(r, FADE_DURATION));
+        // 3. swap page while invisible
+        currentPage = next;
+        // 4. let Svelte render new content (still opacity:0)
+        await tick();
+        // 5. fade in on next frame so transition fires
+        requestAnimationFrame(() => { gridVisible = true; });
+    }
+
+
 </script>
 
 <div class="page">
@@ -203,7 +187,7 @@
             class:visible
             style="--delay: {delays.pfp}"
         >
-            <img src="https://github.com/ravegirl.png" alt="profile picture" />
+            <img bind:this={pfpImg} src="https://github.com/ravegirl.png" alt="profile picture" />
         </div>
 
         <div class="content">
@@ -275,7 +259,7 @@
                     </a>
                 </p> -->
                 <p class="description">
-                    view the
+                    
                     <a
                         class="svelte-link"
                         href="https://github.com/ravegirl/me"
@@ -297,7 +281,7 @@
                 class:visible
                 style="--delay: {delays.stack}"
             >
-                <p class="stack-heading">stack</p>
+                <!-- <p class="stack-heading">stack</p> -->
                 <div class="stack-pills">
                     {#each stack as item}
                         <a
@@ -321,12 +305,32 @@
         class:visible
         style="--delay: {delays.projects}"
     >
-        <p class="projects-heading">projects</p>
+        <div class="projects-heading-row">
+            <!-- <p class="projects-heading">projects</p> -->
+            <div class="projects-nav">
+                <button
+                    class="projects-nav-btn"
+                    onclick={() => changePage(-1)}
+                    disabled={currentPage === 0}
+                    aria-label="Previous page"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                </button>
+                <button
+                    class="projects-nav-btn"
+                    onclick={() => changePage(1)}
+                    disabled={currentPage === totalPages - 1}
+                    aria-label="Next page"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
+            </div>
+        </div>
         <div class="projects-grid">
-            {#each projects as project}
+            {#each projectPages[currentPage] as project}
                 <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
                 <div class="project-card" onclick={() => openProject(project)}>
-                    <div class="project-info">
+                    <div class="project-info content-fade" style="--fade-dur: {FADE_DURATION}ms" class:content-visible={gridVisible}>
                         <div class="project-name-row">
                             {#if project.icon}
                                 <img

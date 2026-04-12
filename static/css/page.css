@@ -23,7 +23,7 @@ body {
 
 .fade-section {
     opacity: 0;
-    transition: opacity 0.5s ease var(--delay, 0ms);
+    transition: opacity 0.7s ease var(--delay, 0ms);
 }
 
 .fade-section.visible {
@@ -42,15 +42,17 @@ body {
 
 .main {
     display: flex;
-    gap: 40px;
+    gap: 72px;
     width: 572px;
     align-items: flex-start;
 }
 
 .pfp {
     flex-shrink: 0;
-    width: 220px;
-    height: 220px;
+    width: 260px;
+    height: 260px;
+    margin-right: -40px;
+    align-self: center;
     border-radius: 50%;
     background-color: #2a2a2a;
     overflow: hidden;
@@ -80,6 +82,36 @@ body {
     display: flex;
     flex-direction: column;
     gap: 32px;
+    position: relative;
+    padding: 12px;
+}
+
+.content::before {
+    content: "";
+    position: absolute;
+    border-left: 1px dashed rgba(255, 255, 255, 0.07);
+    border-right: 1px dashed rgba(255, 255, 255, 0.07);
+    top: -28px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 56px);
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+}
+
+.content::after {
+    content: "";
+    position: absolute;
+    border-top: 1px dashed rgba(255, 255, 255, 0.07);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+    top: 0;
+    left: -28px;
+    width: calc(100% + 56px);
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
 }
 
 .header {
@@ -168,7 +200,7 @@ body {
 .stack-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    /* gap: 8px; */
     max-width: 380px;
 }
 
@@ -177,9 +209,9 @@ body {
     align-items: center;
     gap: 7px;
     padding: 8px 16px;
-    border-radius: 10px;
+    /* border-radius: 10px;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.07); */
     color: rgba(229, 231, 235, 0.7);
     font-size: 0.88rem;
     font-family: "DM Sans", sans-serif;
@@ -209,6 +241,12 @@ body {
     width: 572px;
 }
 
+.projects-heading-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .projects-heading {
     font-family: "DM Sans", sans-serif;
     font-size: 0.78rem;
@@ -219,6 +257,47 @@ body {
     margin: 0;
 }
 
+.projects-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.projects-nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: rgba(229, 231, 235, 0.35);
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    transition: color 0.07s ease, opacity 0.07s ease;
+}
+
+.projects-nav-btn svg {
+    display: block;
+    transition: color 0.07s ease;
+}
+
+.projects-nav-btn:hover:not(:disabled) {
+    color: rgba(229, 231, 235, 0.8);
+}
+
+.projects-nav-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.content-fade {
+    opacity: 0;
+    transition: opacity var(--fade-dur, 220ms) ease;
+}
+
+.content-fade.content-visible {
+    opacity: 1;
+}
+
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(2, 280px);
@@ -226,20 +305,54 @@ body {
 }
 
 .project-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    overflow: hidden;
+    background: transparent;
+    border: none;
+    overflow: visible;
     cursor: pointer;
     text-decoration: none;
     color: inherit;
 }
 
-.project-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.12);
+.project-card::before {
+    content: "";
+    position: absolute;
+    border-left: 1px dashed rgba(255, 255, 255, 0.07);
+    border-right: 1px dashed rgba(255, 255, 255, 0.07);
+    top: -28px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 56px);
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%);
+    transition: border-color 0.07s ease;
+}
+
+.project-card::after {
+    content: "";
+    position: absolute;
+    border-top: 1px dashed rgba(255, 255, 255, 0.07);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+    top: 0;
+    left: -28px;
+    width: calc(100% + 56px);
+    height: 100%;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 18%, black 82%, transparent 100%);
+    transition: border-color 0.07s ease;
+}
+
+.project-card:hover::before {
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.project-card:hover::after {
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 .project-info {
@@ -261,7 +374,7 @@ body {
     border-radius: 6px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .project-name {
@@ -288,8 +401,8 @@ body {
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    border: 1.5px solid rgba(255, 255, 255, 0.1);
-    background: #2a2a2a;
+    border: 1.1px solid rgba(255, 255, 255, 0.08);
+    background: inherit;
     object-fit: contain;
     padding: 2px;
     margin-left: -5px;
@@ -378,6 +491,8 @@ body {
     .pfp {
         width: 120px;
         height: 120px;
+        margin-right: 0;
+        align-self: flex-start;
     }
 
     .content {

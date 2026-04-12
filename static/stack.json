@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        "href": "https://python.org"
+    },
+    {
+        "name": "Go",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg",
+        "href": "https://go.dev"
+    },
+    {
+        "name": "TypeScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+        "href": "https://typescriptlang.org"
+    },
+    {
+        "name": "Svelte",
+        "icon": "https://svelte.dev/favicon.png",
+        "href": "https://svelte.dev"
+    },
+    {
+        "name": "React",
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png?_=20220125121207",
+        "href": "https://react.dev"
+    }
+    ,
+    {
+        "name": "Docker",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg",
+        "href": "https://www.docker.com"
+    },
+    {
+        "name": "Kubernetes",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain-wordmark.svg",
+        "href": "https://kubernetes.io"
+    }
+]
